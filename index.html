@@ -59,7 +59,7 @@
 						document.getElementById("data").innerHTML = "In the green, as open "+  data['Time Series (5min)'][response]['1. open'] + " is greater than close " + data['Time Series (5min)'][response]['2. high'];
 					}else{
 						$("body").css("background-color","red");
-						document.getElementById("data").innerHTML = "In the green, as open "+  data['Time Series (5min)'][response]['1. open'] + " is less than close " + data['Time Series (5min)'][response]['2. high'];
+						document.getElementById("data").innerHTML = "In the red, as open "+  data['Time Series (5min)'][response]['1. open'] + " is less than close " + data['Time Series (5min)'][response]['2. high'];
 					}
 
 				if (request.readyState == 4 && request.status != 200) {
