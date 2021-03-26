@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+	<title>Weather API</title>
+	<meta charset="utf-8"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+	
+		function getgme() {
+			/* Step 1: Make instance of request object...
+			...to make HTTP request after page is loaded*/
+			request = new XMLHttpRequest();
+			console.log("1 - request object created");
+ 
+			// Step 2: Set the URL for the AJAX request to be the JSON file
+
+ /* AJAX Pattern learned and decribed in class by Professor Lisa 
+ * Modified by Tim Seifert for reading GME stock quote historical prices
+ */
+		request.open("GET", "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=GME&interval=5min&apikey=NSQ8B0OAS2QUJJXN", true)
+
+			console.log("2 - opened request file");
+ 
+			// Step 3: set up event handler/callback
+
+			request.onreadystatechange = function() {
+				 
+				if (request.readyState == 4 && request.status == 200) {
+
+					// Step 5: wait for done + success
+					console.log("5 - response received");
+					result = request.responseText;
+					//alert(result);
+					// document.getElementById("data").innerHTML = result;
+					data = JSON.parse(result);
+					var d = new Date();
+					var hours = d.getHours();
+					var minutes = Math.round(d.getMinutes() / 5) * 5;
+					if(minutes < 10){
+						minutes = "0"+minutes;
+					}
+					var time = hours+":"+minutes+":00"
+					var year = d.getFullYear();
+					var month = d.getMonth()+1;
+					if(month < 10){
+						month = "0"+month;
+					}
+					var day = d.getDate()-1;
+					var date = year +"-"+month+"-"+day;
+					console.log(date + " "+ time);
+					let response = date + " "+ time
+					document.getElementById("current_time").innerHTML = response;
+					if(hours == 20){
+						time = "20:00:00";
+						response = date + " "+ time;
+					}
+					if(data['Time Series (5min)'][response]['4. close'] > data['Time Series (5min)'][response]['1. open']){
+						$("body").css("background-color","green");
+						document.getElementById("data").innerHTML = "In the green, as open "+  data['Time Series (5min)'][response]['1. open'] + " is greater than close " + data['Time Series (5min)'][response]['2. high'];
+					}else{
+						$("body").css("background-color","red");
+						document.getElementById("data").innerHTML = "In the green, as open "+  data['Time Series (5min)'][response]['1. open'] + " is less than close " + data['Time Series (5min)'][response]['2. high'];
+					}
+
+				if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+
+			
+				if (request.readyState == 3) {
+
+					document.getElementById("data").innerHTML = "Too soon!  Try again";
+
+				}
+
+			}
+		// Step 4: fire off the HTTP request
+			
+		}
+	}
+	request.send();
+			console.log("4 - Request sent");
+}
+	</script>
+</head>
+
+
+<body onload="getgme()">
+	<div style="color:#fff">
+	<h1 style="text-align: center;">GME</h1>
+	<h2>Alpha Vantage API</h2>
+	<div>
+		Alpha Vantage API gets realtime data of stock tickers. Alpha Vnatage API
+		also gets historical data for further analysis or charting. 
+	</div>
+	<br>
+	<div>
+		I used the GET option in my request to get the JSON data of the GME stock ticker. From here I used built in JavaScript functions to retrieve the current date and time and the used the API key JSON data to retrieve yesterdays price for $GME at that point. The background color changes based off this "real-time" data. The free version does not provide acess to 1 minute on the day JSON data. Wait around a little while and you'll see the background change!
+	</div>
+	<br>
+	<div>
+		For quantitative analysis, this API is highly helpful! Enabling statistical analysis on historical stock prices. This API is also helpful in making applications for everyday investors.
+	</div>
+	<br>
+	<a href="https://www.alphavantage.co/documentation/">Alpha Vantage- https://www.alphavantage.co/documentation/</a>
+	<div id="current_time">
+	</div>
+	</div>
+	<div id="data" style="color:#fff";>Loading...</div>
+</body>
+</html>
