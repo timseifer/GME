@@ -50,9 +50,10 @@
 					console.log(date + " "+ time);
 					let response = date + " "+ time
 					document.getElementById("current_time").innerHTML = response;
-					if(hours == 20){
+					if(hours >= 20 || hours <= 9){
+						alert("after hours or pre-market, displaying at time stamp 20:00:00")
 						time = "20:00:00";
-						response = date + " "+ time;
+						response = date+ " "+ time;
 					}
 					if(data['Time Series (5min)'][response]['4. close'] > data['Time Series (5min)'][response]['1. open']){
 						$("body").css("background-color","green");
