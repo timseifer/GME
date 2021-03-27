@@ -55,6 +55,7 @@
 						time = "20:00:00";
 						response = date+ " "+ time;
 					}
+					try{
 					if(data['Time Series (5min)'][response]['4. close'] > data['Time Series (5min)'][response]['1. open']){
 						$("body").css("background-color","green");
 						document.getElementById("data").innerHTML = "In the green, as open "+  data['Time Series (5min)'][response]['1. open'] + " is greater than close " + data['Time Series (5min)'][response]['2. high'];
@@ -62,19 +63,21 @@
 						$("body").css("background-color","red");
 						document.getElementById("data").innerHTML = "In the red, as open "+  data['Time Series (5min)'][response]['1. open'] + " is less than close " + data['Time Series (5min)'][response]['2. high'];
 					}
+				}catch(err){
+					$("body").css("background-color","#000");
+					document.getElementById("data").innerHTML = "It's probably the weekend, Markets are not open for your gambling addiction";
+				}
 
 				if (request.readyState == 4 && request.status != 200) {
-
 					document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+				}
 
 			
 				if (request.readyState == 3) {
 
 					document.getElementById("data").innerHTML = "Too soon!  Try again";
 
-				}
-
-			}
+					}
 		// Step 4: fire off the HTTP request
 			
 		}
