@@ -1,3 +1,3 @@
 # GME
 
-#A simple HTML file with a script that runs on the Alpha Vantage API, continuously updating the background color based on the movement of $GME
+A simple HTML file with a script that runs on the Alpha Vantage API, continuously updating the background color based on the movement of $GME. Relies heavily on properly parsing a JSON file.
